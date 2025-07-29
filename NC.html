@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0">
+    <title>🤛✋🤘</title>
+    <link rel="preload" href="https://fonts.gstatic.com/s/pacifico/v27/FwZY7Usunxsm1P5ee-A.woff2" as="font" type="font/woff2" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico:wght@400&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #FFD1DC, #E0BBE4, #957DAD);
+            transition: background 1.5s ease-in-out;
+            color: #333;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bubble-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: bubbleFloat 8s infinite ease-out forwards;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes bubbleFloat {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+                transform: translateY(-5%) scale(1);
+            }
+            80% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--translateX)) scale(var(--scale));
+                opacity: 0;
+            }
+        }
+
+        .page-greeting {
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            font-size: 2.5em;
+            color: #8a2be2;
+            margin-bottom: 25px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            z-index: 20;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+        .page-greeting.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .emoji-float-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            z-index: 20;
+        }
+
+        .emoji-float-container .emoji {
+            font-size: 3em;
+            margin: 0 10px;
+            animation-name: floatUpDown;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes floatUpDown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .emoji-float-container .emoji:nth-child(1) {
+            animation-delay: 0s;
+            animation-duration: 1.8s;
+        }
+        .emoji-float-container .emoji:nth-child(2) {
+            animation-delay: 0.4s;
+            animation-duration: 2.0s;
+        }
+        .emoji-float-container .emoji:nth-child(3) {
+            animation-delay: 0.8s;
+            animation-duration: 1.6s;
+        }
+        .emoji-float-container .emoji:nth-child(4) {
+            animation-delay: 1.2s;
+            animation-duration: 1.9s;
+        }
+
+        #giftBoxInitial {
+            width: 300px;
+            height: 300px;
+            background-color: #ff69b4;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease-in-out, opacity 0.8s ease-out, box-shadow 0.3s ease-in-out;
+            z-index: 20;
+        }
+
+        #giftBoxInitial:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: #a020f0;
+            border-radius: 20px 20px 0 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+            transform-origin: top center;
+            z-index: 22;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Pacifico', cursive;
+            font-size: 2em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            border-bottom: 5px solid rgba(0,0,0,0.1);
+        }
+
+        .gift-ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 40px;
+            height: 100%;
+            background-color: #ffd700;
+            transform: translateX(-50%);
+            z-index: 21;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+        .gift-ribbon-horizontal {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #ffd700;
+            transform: translateY(-50%);
+            z-index: 21;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+
+        #birthdayMessageContainer {
+            background: linear-gradient(135deg, white, skyblue);
+            background-size: auto;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            max-width: 600px;
+            width: 90%;
+            box-sizing: border-box;
+            border: 5px solid #C0C0C0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s linear 1s, border 0.3s ease-in-out;
+        }
+
+        #birthdayMessageContainer.revealed {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s linear 0s, border 0.3s ease-in-out;
+            animation: shiningBorder 4s linear infinite;
+        }
+
+        @keyframes shiningBorder {
+            0% { border-color: #C0C0C0; box-shadow: 0 0 15px rgba(192, 192, 192, 0.7), 0 40px 80px rgba(0, 0, 0, 0.6); }
+            50% { border-color: #E0E0E0; box-shadow: 0 0 30px rgba(224, 224, 224, 1.0), 0 40px 80px rgba(0, 0, 0, 0.6); }
+            100% { border-color: #C0C0C0; box-shadow: 0 0 15px rgba(192, 192, 192, 0.7), 0 40px 80px rgba(0, 0, 0, 0.6); }
+        }
+
+        #birthdayMessageContainer h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #birthdayMessageContainer h2 span {
+            background: linear-gradient(90deg, #E91E63, #9C27B0, #673AB7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: headingGlow 4s linear infinite;
+        }
+
+        @keyframes headingGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #birthdayMessageContainer p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #6a4f8d;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        #birthdayMessageContainer p.signature-line {
+            margin-top: 25px;
+            font-weight: bold;
+            color: #6a4f8d;
+            text-align: center;
+        }
+        #birthdayMessageContainer p:nth-last-of-type(2) {
+            font-weight: 500;
+            color: #6a4f8d;
+            margin-bottom: 0;
+        }
+
+        .message-date {
+            font-size: 0.8em;
+            color: #888;
+            text-align: left;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .message-date sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        #giftBoxInitial.unwrapped .gift-lid {
+            transform: translateY(-100%) rotateX(45deg);
+            opacity: 0;
+        }
+        #giftBoxInitial.unwrapped .gift-ribbon-vertical {
+            transform: translateX(-50%) translateY(100%);
+            opacity: 0;
+        }
+        #giftBoxInitial.unwrapped .gift-ribbon-horizontal {
+            transform: translateY(-50%) translateX(-100%);
+            opacity: 0;
+        }
+        #giftBoxInitial.unwrapped {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+        .emoji-float-container.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        .page-greeting.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .launch-particle {
+            position: absolute;
+            bottom: -10px;
+            background-color: transparent;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 40;
+            animation-name: launchUp;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+            pointer-events: none;
+        }
+
+        @keyframes launchUp {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(0.2);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translate(0, -20px) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translate(var(--mid-x-offset), var(--mid-y-offset)) rotate(var(--mid-rotate)) scale(var(--mid-scale));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--end-x-offset), -100vh) rotate(var(--end-rotate)) scale(var(--end-scale));
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-greeting {
+                font-size: 2em;
+            }
+
+            .emoji-float-container .emoji {
+                font-size: 2.5em;
+                margin: 0 8px;
+            }
+
+            #giftBoxInitial {
+                width: 280px;
+                height: 280px;
+            }
+
+            .gift-lid {
+                font-size: 1.9em;
+            }
+
+            #birthdayMessageContainer {
+                padding: 30px 20px;
+            }
+
+            #birthdayMessageContainer h2 {
+                font-size: 2.2em;
+            }
+
+            #birthdayMessageContainer p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-greeting {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+
+            .emoji-float-container {
+                margin-bottom: 25px;
+            }
+
+            .emoji-float-container .emoji {
+                font-size: 2em;
+                margin: 0 5px;
+            }
+
+            #giftBoxInitial {
+                width: 250px;
+                height: 250px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .gift-lid {
+                height: 60px;
+                font-size: 1.8em;
+            }
+            .gift-ribbon-vertical {
+                width: 30px;
+                left: calc(50% - 15px);
+                transform: translateX(0);
+            }
+            .gift-ribbon-horizontal {
+                height: 30px;
+            }
+
+            #birthdayMessageContainer {
+                padding: 25px 15px;
+                border-width: 3px;
+            }
+
+            #birthdayMessageContainer h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            #birthdayMessageContainer p {
+                font-size: 0.95em;
+            }
+
+            .message-date {
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bubble-container"></div> <div class="page-greeting">Tap the box, Chathuri!</div>
+
+    <div class="emoji-float-container">
+        <span class="emoji">🦉</span>
+        <span class="emoji">💖</span>
+        <span class="emoji">🥭</span>
+        <span class="emoji">🦜</span>
+    </div>
+
+    <div id="giftBoxInitial" onclick="revealBirthdayMessage()">
+        <div class="gift-lid">Open Me!</div>
+        <div class="gift-ribbon-vertical"></div>
+        <div class="gift-ribbon-horizontal"></div>
+    </div>
+
+    <div id="birthdayMessageContainer">
+        <h2>🎉 <span>Happy Birthday, Chathuri!</span> 🎊</h2>
+        <p>Wishing you a day filled with pure joy and everything wonderful.</p>
+        <p>May your dedication lead to great success in all your educational pursuits! So grateful for your friendship, my dear mango friend!</p>
+        <p>With so much love,</p>
+        <p class="signature-line">Chenul</p>
+        <span class="message-date">31<sup>st</sup> July 2025</span>
+    </div>
+
+    <script>
+        function createBubble() {
+            const bubbleContainer = document.querySelector('.bubble-container');
+            if (!bubbleContainer) return;
+
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+
+            const size = Math.random() * 40 + 15;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + 'vw';
+            bubble.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            bubble.style.animationDelay = (Math.random() * 2) + 's';
+            const translateX = (Math.random() - 0.5) * 200;
+            bubble.style.setProperty('--translateX', translateX + 'px');
+            const scaleAtTop = Math.random() * 1.5 + 0.7;
+            bubble.style.setProperty('--scale', scaleAtTop);
+
+            bubbleContainer.appendChild(bubble);
+            bubble.addEventListener('animationend', () => bubble.remove());
+        }
+
+        let bubbleInterval;
+        const startBubbles = () => {
+            if (!bubbleInterval) {
+                   bubbleInterval = setInterval(createBubble, 400);
+            }
+        };
+
+        const stopBubbles = () => {
+            clearInterval(bubbleInterval);
+            bubbleInterval = null;
+            const bubbleContainer = document.querySelector('.bubble-container');
+            if (bubbleContainer) {
+                bubbleContainer.style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelectorAll('.bubble').forEach(b => b.remove());
+                }, 500);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', startBubbles);
+
+        function revealBirthdayMessage() {
+            const giftBoxInitial = document.getElementById('giftBoxInitial');
+            const birthdayMessageContainer = document.getElementById('birthdayMessageContainer');
+            const body = document.body;
+            const emojiContainer = document.querySelector('.emoji-float-container');
+            const pageGreeting = document.querySelector('.page-greeting');
+
+            stopBubbles();
+
+            giftBoxInitial.classList.add('unwrapped');
+            emojiContainer.classList.add('hidden');
+            pageGreeting.classList.add('hidden');
+
+            body.style.background = 'linear-gradient(135deg, #00FFFF, #87CEEB, #98FB98)';
+
+            setTimeout(() => {
+                birthdayMessageContainer.classList.add('revealed');
+                createLaunchParticles();
+            }, 500);
+        }
+
+        function createLaunchParticles() {
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#ff69b4', '#8a2be2'];
+            const particleCount = 80;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('launch-particle');
+
+                const size = Math.random() * 12 + 8;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                const side = Math.random() < 0.5 ? 'left' : 'right';
+                if (side === 'left') {
+                    particle.style.left = (Math.random() * 15) + 'vw';
+                } else {
+                    particle.style.left = (85 + Math.random() * 15) + 'vw';
+                }
+
+                const midXOffset = (Math.random() - 0.5) * 400;
+                const midYOffset = -(Math.random() * 30 + 30);
+                const midRotate = (Math.random() * 360 - 180) + 'deg';
+                const midScale = Math.random() * 0.4 + 0.8;
+
+                const endXOffset = (Math.random() - 0.5) * 800;
+                const endRotate = (Math.random() * 720 - 360) + 'deg';
+                const endScale = Math.random() * 0.3 + 0.2;
+
+                particle.style.setProperty('--mid-x-offset', midXOffset + 'px');
+                particle.style.setProperty('--mid-y-offset', midYOffset + 'vh');
+                particle.style.setProperty('--mid-rotate', midRotate);
+                particle.style.setProperty('--mid-scale', midScale);
+                particle.style.setProperty('--end-x-offset', endXOffset + 'px');
+                particle.style.setProperty('--end-rotate', endRotate);
+                particle.style.setProperty('--end-scale', endScale);
+
+                particle.style.animationDuration = (Math.random() * 1.5 + 2.5) + 's';
+                particle.style.animationDelay = (Math.random() * 1.2) + 's';
+
+                document.body.appendChild(particle);
+
+                particle.addEventListener('animationend', () => particle.remove());
+            }
+        }
+    </script>
+
+</body>
+</html>
